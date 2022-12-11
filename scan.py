@@ -4,6 +4,7 @@
 -reopen cmd if it doesnt work 
 -type: pip install pytesseract
 -download the pytesseract windows installer from github*
+-https://github.com/UB-Mannheim/tesseract/wiki
 *windows will try to stop you, click details, run anyway
 -open the start menu and type: env
 -click environment variables, click environment variables at the bottom
