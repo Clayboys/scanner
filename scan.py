@@ -14,7 +14,7 @@
 -click ok, ok, ok
 -type: tesseract
 -reopen cmd if it doesnt work
--to run this script type: python scan2.py
+-to run this script type: python scan.py
 """
 
 
