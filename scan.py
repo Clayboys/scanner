@@ -14,45 +14,48 @@
 -click ok, ok, ok
 -type: tesseract
 -reopen cmd if it doesnt work
--to run this script type: python scan.py
+-to run this script type: python scan2.py
+"""
+
+
+"""
+What I need from Daniel:
+How do I organize this file?
+What names am I looking for?
+What information am I looking for?
+What do I do with the file?
+What do I do with the information?
 """
 
 import tkinter as tk
 from tkinter import filedialog
 from PIL import Image
 from pytesseract import pytesseract
+from pdf2image import convert_from_path
 
 #creating an instance of a tkinter window
 root = tk.Tk()
 #hiding the window without destroying it
 root.withdraw()
-
-#need a string that points to tesseract.exe
-tesPth = r"D:\Program Files\Tesseract-OCR\tesseract.exe"
 #base text to spit out in case nothing gets interperated
-text = "hello world"
+text = ""
 #prompting for a file location
 if tk.messagebox.askyesno(title=None, message="pls select an image file for me to scan"):
-    #try choosing a file using file explorer
-    try: 
-        samplePth = filedialog.askopenfilename()
-        #try opening the chosen file
-        try:
-            img = Image.open(samplePth)
-            #try interperating text from opened image file, and print out the text
-            try:
-                text = pytesseract.image_to_string(img)
-                tk.messagebox.showinfo(title="here's what we found", message=text)
-            except:
-                #something went wrong interperating that file
-                tk.messagebox.showinfo(title=None, message="something went wrong interperating that file! ask for help")
-        except:
-            #something went wrong opening that file
-            tk.messagebox.showinfo(title=None, message="something went wrong opening that file! ask for help")
-    except:
-        #something went wrong choosing that file
-        tk.messagebox.showinfo(title=None, message="something went wrong choosing that file! ask for help")
-    pytesseract.pytesseract_cmd = tesPth
+    samplePth = filedialog.askopenfilename()
+    print("Coverting PDF. Please Wait...")
+    pages = convert_from_path(samplePth)
+    print("Scanning for Text. Please Wait...")
+    pageNum = 1
+    for i in pages:
+        i.save("out0.png")
+        text += "Page " + str(pageNum) + ":\n"
+        pageNum += 1
+        text += pytesseract.image_to_string(".\out0.png")
+    print("Writing Text to File...")
+    with open(".\OutText.txt", "w") as file1:
+        file1.write(text)
+    print("Wrote Text to \"OutText.txt\"")
+    input()
 else:
     #clicked no at initial prompt so just exit
     pass
